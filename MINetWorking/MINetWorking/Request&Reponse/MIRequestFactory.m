@@ -18,6 +18,8 @@
 // AFN中用来管理Http序列化的类
 @property (nonatomic, strong) AFHTTPRequestSerializer *httpRequestSerializer;
 
+@property (nonatomic, assign) BOOL isJson;
+
 @end
 
 @implementation MIRequestFactory
@@ -29,6 +31,7 @@ static  id sharedInstance_ = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedInstance_ = [[self alloc] init];
+        
     });
     return sharedInstance_;
 }
@@ -37,7 +40,7 @@ static  id sharedInstance_ = nil;
 
 #pragma mark - public methods
 - (NSURLRequest *)GETRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                      requestParms:(NSDictionary *)requestParams
+                                      requestParms:(id)requestParams
                                        methodName:(NSString *)methodName
 {
     
@@ -46,7 +49,7 @@ static  id sharedInstance_ = nil;
 }
 
 - (NSURLRequest *)PostRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                      requestParms:(NSDictionary *)requestParams
+                                      requestParms:(id)requestParams
                                         methodName:(NSString *)methodName
 {
     
@@ -54,7 +57,7 @@ static  id sharedInstance_ = nil;
 }
 
 - (NSURLRequest *)PUTRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                     requestParms:(NSDictionary *)requestParams
+                                     requestParms:(id)requestParams
                                        methodName:(NSString *)methodName
 {
     return [self generateRequestWithServiceIdentifier:serviceIdentifier requestParams:requestParams methodName:methodName requestWithMethod:@"PUT"];
@@ -62,7 +65,7 @@ static  id sharedInstance_ = nil;
 }
 
 - (NSURLRequest *)DELETERequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                        requestParms:(NSDictionary *)requestParams
+                                        requestParms:(id)requestParams
                                           methodName:(NSString *)methodName
 {
     return [self generateRequestWithServiceIdentifier:serviceIdentifier requestParams:requestParams methodName:methodName requestWithMethod:@"DELETE"];
@@ -70,7 +73,7 @@ static  id sharedInstance_ = nil;
 
 
 - (NSURLRequest *)generateRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                         requestParams:(NSDictionary *)requestParams
+                                         requestParams:(id)requestParams
                                             methodName:(NSString *)methodName
                                      requestWithMethod:(NSString *)method
 {
@@ -79,6 +82,7 @@ static  id sharedInstance_ = nil;
     NSString *urlString = [service urlGeneratingRuleByMethodName:methodName];
     
     // 组装request
+    self.isJson = [requestParams isKindOfClass:[NSDictionary class]];
     NSMutableURLRequest *request = [self.httpRequestSerializer requestWithMethod:method URLString:urlString parameters:requestParams error:NULL];
     // 添加额外的请求头信息
     if([service.child respondsToSelector:@selector(extraHttpHeadParmsWithMethodName:)]){
@@ -104,7 +108,7 @@ static  id sharedInstance_ = nil;
 {
     if(_httpRequestSerializer == nil){
     
-        _httpRequestSerializer = [AFHTTPRequestSerializer serializer];
+        _httpRequestSerializer = !self.isJson? [AFHTTPRequestSerializer serializer]:[AFJSONRequestSerializer serializer];
         _httpRequestSerializer.timeoutInterval = [MINetworkConfigurationManager sharedInstance].timeOutSeconds;
         _httpRequestSerializer.cachePolicy = NSURLRequestUseProtocolCachePolicy;
     

@@ -16,25 +16,25 @@ typedef void(^ApiCallBack)(MIURLResponse *response);
 + (instancetype)sharedInstance;
 
 
-- (NSUInteger)API_GETWithParams:(NSDictionary *)params
+- (NSUInteger)API_GETWithParams:(id)params
           serviceIdentifier:(NSString *)serviceIdentifier
                  methodName:(NSString *)methodName
                     success:(ApiCallBack)success
                     failure:(ApiCallBack)failure;
 
-- (NSUInteger)API_POSTWithParams:(NSDictionary *)params
+- (NSUInteger)API_POSTWithParams:(id)params
          serviceIdentifier:(NSString *)serviceIdentifier
                 methodName:(NSString *)methodName
                    success:(ApiCallBack)success
                    failure:(ApiCallBack)failure;
 
-- (NSUInteger)API_PUTWithParams:(NSDictionary *)params
+- (NSUInteger)API_PUTWithParams:(id)params
           serviceIdentifier:(NSString *)serviceIdentifier
                  methodName:(NSString *)methodName
                     success:(ApiCallBack)success
                     failure:(ApiCallBack)failure;
 
-- (NSUInteger)API_DELETEWithParams:(NSDictionary *)params
+- (NSUInteger)API_DELETEWithParams:(id)params
             serviceIdentifier:(NSString *)serviceIdentifier
                    methodName:(NSString *)methodName
                       success:(ApiCallBack)success

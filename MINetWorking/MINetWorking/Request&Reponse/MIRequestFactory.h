@@ -13,20 +13,20 @@
 + (instancetype)sharedInstance;
 
 - (NSURLRequest *)GETRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                     requestParms:(NSDictionary *)requestParams
+                                     requestParms:(id)requestParams
                                        methodName:(NSString *)methodName;
 
 
 - (NSURLRequest *)PostRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                     requestParms:(NSDictionary *)requestParams
+                                     requestParms:(id)requestParams
                                        methodName:(NSString *)methodName;
 
 - (NSURLRequest *)PUTRequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                     requestParms:(NSDictionary *)requestParams
+                                     requestParms:(id)requestParams
                                        methodName:(NSString *)methodName;
 
 - (NSURLRequest *)DELETERequestWithServiceIdentifier:(NSString *)serviceIdentifier
-                                     requestParms:(NSDictionary *)requestParams
+                                     requestParms:(id)requestParams
                                        methodName:(NSString *)methodName;
 
 

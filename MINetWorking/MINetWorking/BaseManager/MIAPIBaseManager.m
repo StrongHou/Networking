@@ -93,7 +93,7 @@ __strong typeof(weakSelf) strongSelf = weakSelf;\
 }
 - (NSUInteger)callApi
 {
-    NSDictionary *params = [self.paramDataSource paramsForManger:self];
+    id params = [self.paramDataSource paramsForManger:self];
 
     return [self callApiWithParams:params];
 }
@@ -113,7 +113,7 @@ __strong typeof(weakSelf) strongSelf = weakSelf;\
     }
 }
 
-- (BOOL)shouldCallAPIWithParams:(NSDictionary *)params
+- (BOOL)shouldCallAPIWithParams:(id)params
 {
     BOOL result = YES;
     if (self != self.interceptor && [self.interceptor respondsToSelector:@selector(manager:shouldCallAPIWithParams:)]) {
@@ -121,7 +121,7 @@ __strong typeof(weakSelf) strongSelf = weakSelf;\
     }
     return result;
 }
-- (void)didCallAPIWithParams:(NSDictionary *)params
+- (void)didCallAPIWithParams:(id)params
 {
     if(self != self.interceptor && [self.interceptor respondsToSelector:@selector(manager:didCallAPIWithParams:)]){
     
@@ -170,7 +170,7 @@ __strong typeof(weakSelf) strongSelf = weakSelf;\
 }
 
 #pragma mark - private methods
-- (NSInteger)callApiWithParams:(NSDictionary *)params
+- (NSInteger)callApiWithParams:(id)params
 {
     NSUInteger requestID = 0;
     
@@ -180,16 +180,16 @@ __strong typeof(weakSelf) strongSelf = weakSelf;\
             if(self.isReachabel){
                 self.isLoading =YES;
                 switch (self.child.requestType) {
-                    case MIAPIManagerRequestTypeGet:
+                    case MIAPIManagerRequestTypeGET:
                         MICALLAPI(GET, requestID);
                         break;
-                    case MIAPIManagerRequestTypePost:
+                    case MIAPIManagerRequestTypePOST:
                         MICALLAPI(POST, requestID);
                         break;
-                    case MIAPIManagerRequestTypePut:
+                    case MIAPIManagerRequestTypePUT:
                         MICALLAPI(PUT, requestID);
                         break;
-                    case MIAPIManagerRequestTypeDelete:
+                    case MIAPIManagerRequestTypeDELETE:
                         MICALLAPI(DELETE, requestID);
                         break;
                     default:

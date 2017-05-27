@@ -26,17 +26,20 @@ typedef NS_ENUM(NSUInteger, MIAPIManagerErrorType) {
 
 
 typedef NS_ENUM (NSUInteger, MIAPIManagerRequestType){
-    MIAPIManagerRequestTypeGet,
-    MIAPIManagerRequestTypePost,
-    MIAPIManagerRequestTypePut,
-    MIAPIManagerRequestTypeDelete
+    MIAPIManagerRequestTypeGET,
+    MIAPIManagerRequestTypePOST,
+    MIAPIManagerRequestTypePUT,
+    MIAPIManagerRequestTypeDELETE
 };
 
 
 // 这个协议 主要为Http提供请求参数
 @protocol MIAPIManagerParamDataSource<NSObject>
 @required
-- (NSDictionary *)paramsForManger:(MIAPIBaseManager *)manager;
+// 可能有两种情况
+// 1、字典 -> json
+// 2、protobuf字节流
+- (id)paramsForManger:(MIAPIBaseManager *)manager;
 @end
 
 @protocol MIAPIManagerCallBackDelegate <NSObject>
@@ -85,8 +88,8 @@ typedef NS_ENUM (NSUInteger, MIAPIManagerRequestType){
 - (BOOL)manager:(MIAPIBaseManager *)manager shouldPerformFailureWithResponse:(MIURLResponse *)response;
 - (void)manager:(MIAPIBaseManager *)manager didPerformFailureWithResponse:(MIURLResponse *)response;
 
-- (BOOL)manager:(MIAPIBaseManager *)manager shouldCallAPIWithParams:(NSDictionary *)params;
-- (void)manager:(MIAPIBaseManager *)manager didCallAPIWithParams:(NSDictionary *)params;
+- (BOOL)manager:(MIAPIBaseManager *)manager shouldCallAPIWithParams:(id)params;
+- (void)manager:(MIAPIBaseManager *)manager didCallAPIWithParams:(id)params;
 
 @end
 
@@ -109,18 +112,21 @@ typedef NS_ENUM (NSUInteger, MIAPIManagerRequestType){
 
 - (id)dataWithDataProcessing:(id<MIAPIManagerCallBackDataProcessing>)dataProcessing;
 
+// 读取接口数据
 - (NSUInteger)callApi;
 
 - (void)cancelAllRequests;
 - (void)cancelRequestWithRequestId:(NSUInteger)requestID;
 
 // AOP
+- (BOOL)shouldCallAPIWithParams:(id)params;
+- (void)didCallAPIWithParams:(id)params;
+
 - (BOOL)shouldPerformSuccessWithResponse:(MIURLResponse *)response;
 - (void)didPerformSuccessWithResponse:(MIURLResponse *)response;
 
 - (BOOL)shouldPerformFailureWithResponse:(MIURLResponse *)response;
 - (void)didPerformFailureWithResponse:(MIURLResponse *)response;
 
-- (BOOL)shouldCallAPIWithParams:(NSDictionary *)params;
-- (void)didCallAPIWithParams:(NSDictionary *)params;
+
 @end

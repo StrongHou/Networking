@@ -52,7 +52,7 @@ static id sharedInstance_ = nil;
 
 
 #pragma mark - public method
-- (NSUInteger)API_GETWithParams:(NSDictionary *)params
+- (NSUInteger)API_GETWithParams:(id)params
           serviceIdentifier:(NSString *)serviceIdentifier
                  methodName:(NSString *)methodName
                     success:(ApiCallBack)success
@@ -64,7 +64,7 @@ static id sharedInstance_ = nil;
     return [[self callApiWithRequest:request success:success failure:failure] unsignedIntegerValue];
 }
 
-- (NSUInteger)API_POSTWithParams:(NSDictionary *)params
+- (NSUInteger)API_POSTWithParams:(id)params
            serviceIdentifier:(NSString *)serviceIdentifier
                   methodName:(NSString *)methodName
                      success:(ApiCallBack)success
@@ -75,7 +75,7 @@ static id sharedInstance_ = nil;
     return [[self callApiWithRequest:request success:success failure:failure] unsignedIntegerValue];
 }
 
-- (NSUInteger)API_PUTWithParams:(NSDictionary *)params
+- (NSUInteger)API_PUTWithParams:(id)params
           serviceIdentifier:(NSString *)serviceIdentifier
                  methodName:(NSString *)methodName
                     success:(ApiCallBack)success
@@ -87,7 +87,7 @@ static id sharedInstance_ = nil;
 
 }
 
-- (NSUInteger)API_DELETEWithParams:(NSDictionary *)params
+- (NSUInteger)API_DELETEWithParams:(id)params
              serviceIdentifier:(NSString *)serviceIdentifier
                     methodName:(NSString *)methodName
                        success:(ApiCallBack)success

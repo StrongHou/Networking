@@ -33,7 +33,7 @@
 }
 - (MIAPIManagerRequestType)requestType
 {
-    return MIAPIManagerRequestTypePost;
+    return MIAPIManagerRequestTypePOST;
 }
 
 - (BOOL)manager:(MIAPIBaseManager *)manager isCorrectWithParamsData:(NSDictionary *)data
