@@ -10,8 +10,11 @@
 #import "MIApiProxy.h"
 #import "MITestManager.h"
 
-@interface ViewController () <MIAPIManagerCallBackDelegate, MIAPIManagerParamDataSource>
+@interface ViewController () <MIAPIManagerCallBackDelegate, MIAPIManagerParamDataSource,UIWebViewDelegate>
 @property (nonatomic, strong) MITestManager *testManager;
+@property (nonatomic, strong) UIWebView *webView;
+
+
 @end
 
 @implementation ViewController
@@ -19,9 +22,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+     NSArray *cookies=[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+//    [self.view addSubview:self.webView];
+    
+//    
+//    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
+//     NSLog(@"%@",cookies);
+    
+    [self.testManager callApi];
+}
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
    
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+//    [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"https://www.baidu.com/"]]];
+
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -30,18 +54,48 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
-   
-    [self.testManager callApi];
+  
 
 }
 
+
+
+#pragma mark -
+
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    
+//    NSArray *cookies=[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+//    
+//  
+//    
+//    
+//    for(NSHTTPCookie *cookie in cookies){
+//    
+//        [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
+//    }
+//    
+//    NSArray *cookies1=[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
+//    
+//    NSLog(@"%@",cookies1);
+    
+    return YES;
+
+}
 
 
 #pragma mark - 
 
 - (void)managerCallAPIDidSuccess:(MIAPIBaseManager *)manager
 {
+    NSArray *cookies=[[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     
+    NSLog(@"%@",cookies);
+    
+
+
+
+
 }
 
 
@@ -66,6 +120,18 @@
         _testManager.delegate = self;
     }
     return _testManager;
+}
+
+- (UIWebView *)webView
+{
+    if(_webView == nil){
+        _webView = [[UIWebView alloc] init];
+        _webView.delegate = self;
+        _webView.frame = self.view.bounds;
+        _webView.backgroundColor = [UIColor whiteColor];
+        
+    }
+    return _webView;
 }
 
 @end
